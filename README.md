@@ -1,10 +1,4 @@
-<title>Your Title Goes Here</title>
-<meta name="description" content="Your description goes here">
-<meta name="robots" content="index, follow">
-<link href="URL" rel="canonical">
-<meta property="og:title" content="My Awesome Facebook Title!">
-<meta name="twitter:title" content="My Awesome Twitter Title!" />
-<meta name=”author” content=”John Appleseed”>
+
 
 # 🌌 Astro Galaksija – Portal za Astrologiju i Duhovnost
 
