@@ -1,0 +1,1914 @@
+:root {
+    --background-color: #0f0b1e;
+    --secondary-background-color: #1a1433;
+    --primary-pink: #e07be0;
+    --purple-accent: #9b7ede;
+    --text-color: #f4f1fa;
+    --secondary-text-color: #c8c3e0;
+
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Montserrat', sans-serif;
+
+    --section-space: 2rem;
+
+    
+}
+
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 100%; /* default, user-controlled */
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 1rem; /* 16px */
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding-top: 4rem;
+
+    background-image: url('slike/zvezde-mobile.webp');
+    background-attachment: fixed; /* Ključno: slika se ne pomera dok skroluješ */
+    background-size: cover;       /* Slika uvek pokriva ceo ekran */
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+img, video {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+img {
+    vertical-align: middle;
+}
+
+.container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1rem;
+    
+}
+
+h1, h2, h3 {
+    font-family: var(--font-heading);
+    color: var(--text-color);
+    
+}
+h1 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 1.4rem;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+}
+
+h3 {
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+p {
+    font-size: 1rem; /* 16px */
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.text-content {
+    max-width: 60ch;
+    margin-inline: auto;
+}
+
+.section {
+    padding-block: var(--section-space);
+}
+
+a {
+    color: var(--primary-pink);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--purple-accent);
+}
+
+a:focus-visible {
+    outline: 2px solid var(--primary-pink);
+    outline-offset: 2px;
+}
+
+.logo {
+    font-family: var(--font-body);
+    font-size: 1.25rem;
+    font-weight: 600;
+    background: linear-gradient(
+    90deg,
+    #6f42c1,
+    #9b5de5,
+    #00c9a7
+  );
+  background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    
+    transition: background-position 0.8s ease;
+    
+}
+.logo:hover {
+  background-position: 100% 50%;
+  text-shadow: 0 0 12px rgba(155, 93, 229, 0.35);
+}
+
+
+
+.main-nav {
+    position: relative;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    position: relative;
+    
+}
+.nav-toggle span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: var(--primary-pink);
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6); /* Dodaje malo "karaktera" animaciji */
+    position: absolute; 
+}
+.nav-toggle span:nth-child(1) { top: 0; }
+.nav-toggle span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.nav-toggle span:nth-child(3) { bottom: 0; }
+
+/* Savršena transformacija u X bez deformacije */
+.nav-toggle.active span:nth-child(1) {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: translate(-20px, -50%); /* Odleće u stranu */
+}
+
+.nav-toggle.active span:nth-child(3) {
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
+}
+.nav-menu {
+    position: absolute;
+    top: 100%; /* Odmah ispod headera */
+    left: 0;
+    width: 100%;
+    background-color: var(--secondary-background-color);
+    
+    /* Sakrivanje menija */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease-in-out;
+    
+    z-index: 1000;
+}
+.nav-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    padding: 1rem 0;
+}
+.nav-menu ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
+}
+.nav-menu li a {
+    display: block;
+    color: var(--text-color);
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    transition: color 0.2s ease;
+}
+.nav-menu li a:hover,
+.nav-menu li a:focus-visible {
+    color: var(--purple-accent);
+}
+.nav-list a.active {
+    color: var(--primary-pink); /* Menja boju u pink */
+    border-bottom: 2px solid var(--primary-pink); /* Dodaje liniju ispod */
+    font-weight: bold;
+}
+
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--secondary-background-color);
+    z-index: 2000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+
+.hero {
+    padding-block: var(--section-space);
+    text-align: center;
+}
+.hero-title {    
+    font-size: clamp(1,5rem, 8vw, 3rem);
+    
+}
+.hero-title span {
+    color: var(--primary-pink);
+    font-weight: 700;
+    font-size: 2rem;
+}
+.hero-subtitle {
+    color: var(--secondary-text-color);
+    max-width: 600px;
+    margin-inline: auto;
+    margin-bottom: 3rem;
+}
+
+
+.zodiac-section-title {
+    color: var(--primary-pink);
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+    margin-bottom: 1.5rem;
+    
+}
+
+.zodiac-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.8rem;
+}
+
+.zodiac-item {
+    background: rgba(224, 123, 224, 0.1);
+    padding: 1.5rem 0.5rem;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 1px solid rgba(224, 123, 224, 0.1);
+    transition: 0.3s;
+    opacity: 0;
+    animation: fadeInZodiac 0.6s ease forwards;
+}
+
+.zodiac-item:hover {
+    border-color: var(--primary-pink);
+}
+
+.zodiac-icon {
+    font-size: 2rem;
+    color: var(--primary-pink);
+    margin-bottom: 0.5rem;
+}
+.zodiac-item span { font-size: 0.75rem;
+    color: var(--text-color);
+    text-transform: uppercase; 
+}
+
+.astro-navigation-box {
+    background: rgba(20, 20, 40, 0.6);
+    border: 1px solid rgba(255, 105, 180, 0.3);
+    padding: 20px;
+    margin: 20px 15px; /* Manji margina sa strana na mobilnom */
+    /* max-width se ne menja, ali margin auto centrirana na desktopu */
+    border-radius: 15px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+}
+
+.cta-links {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column; /* Vertikalno na mobilnom */
+    gap: 12px;
+    align-items: center;
+}
+
+.cta-link {
+    color: var(--primary-pink);
+    text-decoration: none;
+    
+    font-size: 1.1rem;
+    transition: 0.3s;
+    padding: 5px 0; /* Veća površina za klik na telefonu */
+}
+
+.cta-link:hover {
+    color: #fff;
+    text-shadow: 0 0 10px var(--primary-pink);
+}
+
+/* Sakrivamo separator na mobilnom jer su linkovi jedan ispod drugog */
+.separator {
+    display: none;
+}
+.newsletter-mid {
+    padding-block: 4rem;
+    background: linear-gradient(
+        135deg, 
+        rgba(47, 20, 51, 0.5) 0%, 
+        rgba(15, 11, 30, 0.7) 50%, 
+        rgba(47, 20, 51, 0.5) 100%
+    );
+    border-top: 1px solid rgba(224, 123, 224, 0.1);
+    border-bottom: 1px solid rgba(224, 123, 224, 0.1);
+    
+    
+}
+.newsletter-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    max-width: 800px;
+    
+}
+.newsletter-text h2 {
+    font-size: clamp(1.5rem, 5vw, 2.2rem);
+    margin-bottom: 0.5rem;
+}
+.newsletter-text h2 span {
+    color: var(--primary-pink);
+}
+.newsletter-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 600px;
+}
+.newsletter-inline input {
+    flex: 1;
+    padding: 1rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid rgba(224, 123, 224, 0.3);
+    background: var(--background-color);
+    color: white;
+    outline: none;
+}
+
+.btn-glow {
+    background: var(--primary-pink);
+    color: var(--secondary-background-color);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(224, 123, 224, 0.3);
+    transition: all 0.3s ease;
+}
+.btn-glow:hover {
+    box-shadow: 0 0 15px rgba(224, 123, 224, 0.6);
+}
+
+
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+.section-title span {
+    color: var(--primary-pink);
+}
+
+.news-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.news-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+} 
+
+.news-card:hover {
+    transform: translateY(-10px);
+}
+.placeholder-img {
+    width: 100%;
+    height: 100%; 
+}
+.news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    /* Seče višak, čuva proporcije */
+    object-position: top; /* Fokus na sredinu slike */
+    display: block;
+}
+.news-image {
+    width: 100%;
+    position: relative;
+    height: 200px; /* Fiksna visina na mobilnom */
+    overflow: hidden;
+}
+.news-info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    
+    
+}
+
+.news-info .read-more {
+    margin-top: auto; /* Gura dugme "Pročitaj više" na dno kartice */
+    padding-top: 15px;
+}
+.news-category {
+    color: var(--purple-accent);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    
+    
+}
+.news-category:hover {
+    
+    transform: translateY(-1px);
+    color: var(--text-color);
+}
+.news-info h3 {
+    margin: 0.5rem 0 1rem;
+    font-size: 1.25rem;
+    line-height: 1.3;
+}
+.news-info p {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    margin-bottom: 1.5rem;
+}
+
+
+.read-more {
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding-bottom: 2px;
+}
+
+.site-footer {
+    background: rgba(224, 123, 224, 0.1);
+    padding-top: 2rem;
+    
+    border-top: 1px solid rgba(224, 123, 224, 0.1);
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    padding-bottom: 2rem;
+    align-items: start;
+}
+.footer-about .logo {
+    display: block;
+    margin-bottom: 1rem;
+}
+.footer-about {
+    align-items: center;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    
+}
+
+.footer-about p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;   
+}
+.footer-links h3, 
+.footer-newsletter h3 {
+    color: var(--text-color);
+    font-family: var(--font-body);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+.footer-links ul {
+    list-style: none;
+}
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+.footer-links a {
+    color: var(--secondary-text-color);
+}
+.footer-links a:hover {
+    color: var(--primary-pink);
+}
+
+.footer-newsletter p {
+    color: var(--secondary-text-color);
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.newsletter-form input {
+    background-color: var(--background-color);
+    border: 1px solid rgba(224, 123, 224, 0.2);
+    padding: 0.8rem 1rem;
+    border-radius: 5px;
+    color: white;
+    font-family: var(--font-body);
+}
+.btn-submit {
+    background-color: var(--primary-pink);
+    color: var(--background-color);
+    border: none;
+    padding: 0.8rem;
+    border-radius: 5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color ease 0.3s;
+}
+.btn-submit:hover {
+    background-color: var(--purple-accent);
+}
+.footer-bottom {
+    background-color: #0a0714;
+    padding: 0.25rem 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.footer-bottom p {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0;
+}
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-pink);
+    color: var(--background-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+}
+
+.back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background-color: var(--purple-accent);
+    transform: translateY(-5px);
+}
+
+.hero-simple {
+    padding-top: 2rem;
+    text-align: center;
+}
+.zodiac-grid-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 3rem;
+    
+}
+.zodiac-link-item {
+    background: rgba(224, 123, 224, 0.1);
+    padding: 1rem 0.5rem;
+    text-align: center;
+    border-radius: 8px;
+    border: 1px solid rgba(224, 123, 224, 0.1);
+    font-size: 1.2rem;
+    transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--primary-pink);
+}
+
+.zodiac-link-item span {
+    font-size: 0.8rem;
+    color: var(--text-color);
+    margin-top: 5px;
+}
+.zodiac-link-item:hover {
+    border-color: var(--primary-pink);
+    transform: translateY(-3px);
+    background: rgba(224, 123, 224, 0.05);
+}
+.horoscope-reading {
+    background: rgba(224, 123, 224, 0.1);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    border-left: 2px solid var(--primary-pink);
+    scroll-margin-top: 120px;
+    
+    
+    margin-inline: 10px;
+}
+
+.horoscope-reading:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: rgba(224, 123, 224, 0.3);
+}
+
+
+.reading-header {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+.reading-icon {
+    font-size: 2rem;
+    color: var(--primary-pink);
+}
+.reading-date {
+    
+    font-size: 0.75rem;
+    color: var(--secondary-text-color);
+    font-style: italic;
+}
+.astro-indicators {
+    padding-block: 2rem;
+    background: rgba(26, 20, 51, 0.5);
+    text-align: center;
+}
+
+.indicators-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Na mobilnom jedan ispod drugog */
+    gap: 3rem;
+}
+
+.indicator-item h3 {
+    margin-top: 1rem;
+    color: var(--primary-pink);
+}
+
+.circle-box {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    background: radial-gradient(circle, var(--secondary-background-color) 60%, transparent 61%),
+                conic-gradient(var(--primary-pink) calc(var(--percent) * 1%), var(--background-color) 0);
+    box-shadow: 0 0 20px rgba(224, 123, 224, 0.2);
+}
+.disclaimer-section {
+    padding-block: 4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.disclaimer-section p {
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+    text-align: center;
+    max-width: 650px;
+    margin-inline: auto;
+    line-height: 1.5;
+    opacity: 0.7;
+}
+.form-status-msg {
+    margin-top: 1rem;
+    border-radius: 10px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.form-status-msg.success h3 {
+    color: var(--primary-pink);
+    font-family: 'Cinzel', serif;
+    margin-bottom: 0.5rem;
+}
+
+.form-status-msg.success p {
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+}
+
+.weekly-sign-block {
+    margin-bottom: 50px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 105, 180, 0.1);
+}
+
+.sign-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.sign-symbol {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.date-range {
+    font-size: 0.9rem;
+    color: var(--primary-pink);
+    font-style: italic;
+}
+
+.weekly-grid {
+    display: flex;
+    flex-direction: column; /* Mobile: jedan ispod drugog */
+    gap: 15px;
+}
+
+.weekly-card {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 1px solid var(--primary-pink);
+}
+
+.weekly-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: var(--primary-pink);
+    font-family: 'Cinzel', serif;
+}
+
+.weekly-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--secondary-text-color);
+}
+
+
+.mystic-orb-section {
+    padding: 60px 0;
+    text-align: center;
+    overflow: hidden;
+}
+
+.orb-subtitle {
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+    margin-bottom: 40px;
+}
+.mystic-orb-section .section-title {
+    color: var(--primary-pink);
+}
+.orb-wrapper {
+    position: relative;
+    width: 250px;
+    height: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Kristalna kugla */
+.crystal-orb {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, rgba(138, 43, 226, 0.4) 40%, rgba(0, 0, 0, 0.8) 100%);
+    box-shadow: inset 0 0 50px rgba(255, 105, 180, 0.3), 0 0 20px rgba(138, 43, 226, 0.2);
+    position: relative;
+    cursor: pointer;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.5s ease;
+}
+
+/* Efekat dok se kugla "aktivira" */
+.crystal-orb.active {
+    animation: orb-pulse 1.5s infinite alternate;
+    box-shadow: inset 0 0 60px rgba(255, 255, 255, 0.4), 0 0 40px var(--primary-pink);
+}
+
+@keyframes orb-pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+/* Tekst unutar kugle */
+.orb-text {
+    color: #fff;
+    font-size: 0.85rem;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 1s ease;
+    font-family: 'Montserrat', sans-serif;
+    text-shadow: 0 0 10px var(--primary-pink);
+}
+
+.orb-text.show {
+    opacity: 1;
+}
+
+/* Postolje kugle */
+.orb-base {
+    width: 140px;
+    height: 40px;
+    background: linear-gradient(to bottom, #222, #000);
+    border-radius: 10px 10px 50% 50%;
+    margin-top: -10px;
+    z-index: 1;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.reset-orb-btn {
+    margin-top: 30px;
+    background: transparent;
+    border: 1px solid var(--primary-pink);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    opacity: 0;
+    transition: 0.5s;
+    pointer-events: none;
+}
+
+.reset-orb-btn.show {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.yearly-sign-block h2 span {
+    font-size: 1.2rem;
+    color: var(--secondary-text-color);
+    display: block;
+}
+
+.tagline {
+    font-style: italic;
+    color: #d4af37; /* Zlatna boja za godišnju prognozu */
+    margin-top: 10px;
+    font-size: 1.1rem;
+}
+
+.yearly-main-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #ccc;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.yearly-sign-block {
+    background: rgba(255, 255, 255, 0.03); /* Suptilna tamna pozadina */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 50px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(5px); /* Efekt zamućenog stakla */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+.yearly-sign-block:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.1); /* Zlatni odsjaj na hover */
+    border-color: var(--primary-pink);
+}
+.sign-header {
+    text-align: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 20px;
+}
+.sign-symbol {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 10px;
+}
+.yearly-sign-block h2 {
+    
+    font-size: 2rem;
+    color: #fff;
+    margin: 0;
+}
+.yearly-sign-block h2 span {
+    color: var(--primary-pink);
+    font-size: 1.2rem;
+}
+.yearly-card {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 1px solid var(--primary-pink);
+    margin-bottom: 1.125rem;
+}
+.yearly-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+.yearly-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #bbb;
+}
+
+.blog-preview {
+    padding: 80px 0;
+}
+
+.blog-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Na mobilnom jedna kolona */
+    gap: 30px;
+}
+
+.blog-card {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+}
+
+.blog-image {
+    position: relative;
+    height: 200px;
+}
+
+.blog-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blog-category {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: var(--primary-pink);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.blog-content {
+    padding: 20px;
+}
+
+.blog-date {
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+}
+
+.blog-content h3 {
+    margin: 10px 0;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    color: white;
+}
+
+.blog-content p {
+    font-size: 0.95rem;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.blog-link {
+    color: var(--primary-pink);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.blog-footer {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn-secondary {
+    border: 1px solid var(--primary-pink);
+    color: white;
+    padding: 12px 30px;
+    border-radius: 25px;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-pink);
+}
+
+
+
+.blog-hero {
+    padding: 40px 0;
+}
+
+.hero-post-wrapper {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Mobile first */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.hero-post-image {
+    height: 300px;
+}
+.hero-post-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.hero-post-info {
+    padding: 30px;
+}
+.category-tag {
+    background: var(--primary-pink);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    
+    display: inline-block; /* Omogućava kontrolu širine */
+    width: fit-content;    /* Širina tačno prema tekstu */
+    padding: 5px 15px;
+    white-space: nowrap;   /* Sprečava prelamanje u dva reda */
+
+}
+.hero-post-info h1 {
+    
+    margin: 20px 0;
+    font-size: 1.8rem;
+    line-height: 1.3;
+}
+.hero-post-info p {
+    color: var(--secondary-text-color);
+}
+.read-more-btn {
+    display: inline-block; /* Veoma važno da ne bude block */
+    width: fit-content;    /* Na desktopu će biti samo onoliko široko koliko je tekst */
+    padding: 12px 0;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+.read-more-btn:hover {
+    
+    color: white;
+    transform: translateY(-2px);
+    
+}
+.blog-filters {
+    padding: 20px 0;
+    overflow-x: auto; /* Klizanje na mobilnom */
+    white-space: nowrap;
+}
+.blog-filters ul {
+    list-style: none;
+}
+.filter-list {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+}
+.filter-item {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.filter-item.active {
+    background: var(--primary-pink);
+    border-color: var(--primary-pink);
+}
+.magazine-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 40px;
+}
+.magazine-item {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.mag-img-wrap {
+    position: relative;
+    height: 220px;
+}
+.mag-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+}
+.mag-cat {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(26, 26, 46, 0.8);
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-size: 0.75rem;
+}
+.mag-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.mag-content h3 {
+    margin: 10px 0;
+    font-size: 1.3rem;
+}
+.mag-content p {
+    color: var(--secondary-text-color);
+    font-size: 1rem;
+}
+
+.mag-link {
+    color: var(--primary-pink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-top: auto;
+    padding-top: 15px;
+}
+.pagination {
+    text-align: center;
+    margin: 60px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    
+}
+.page-num.active {
+    color: var(--purple-accent);
+    
+    text-decoration: underline;
+   
+}
+.archive-header {
+    padding: 60px 0 20px;
+    text-align: center;
+}
+.archive-header h1 {
+    
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 1rem;
+}
+.archive-header p {
+    
+    font-weight: 600;
+    
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+}
+
+.single-post-container {
+    padding-top: 80px;
+}
+.post-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.post-meta-cat {
+    display: inline-block;
+    background: var(--primary-pink);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+.post-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    padding: 0 10px;
+}
+.post-author-info {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 30px;
+}
+.post-main-image {
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+}
+.post-main-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.post-content {
+    max-width: 800px; /* Ograničavamo širinu radi lakšeg čitanja */
+    margin: 40px auto;
+    line-height: 1.8;
+    color: #ddd;
+    font-size: 1.1rem;
+}
+.post-content .lead {
+    font-size: 1.125rem;
+    color: white;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+.post-content h2,h3 {
+    font-family: 'Cinzel', serif;
+    color: var(--primary-pink);
+    margin: 40px 0 20px;
+}
+.post-content blockquote {
+    border-left: 4px solid var(--primary-pink);
+    padding-left: 20px;
+    margin: 40px 0;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: white;
+}
+.post-share {
+    padding: 40px 0;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: 50px;
+}
+.post-share p {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 20px;
+}
+.share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap; /* Da se ne lome na jako malim ekranima */
+}
+.share-btn {
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: white;
+    transition: transform 0.2s, opacity 0.2s;
+}
+.share-btn:active {
+    transform: scale(0.95);
+}
+.share-btn.fb { background-color: #1877F2; }
+.share-btn.wa { background-color: #25D366; }
+.share-btn.vb { background-color: #7360F2; }
+
+.share-btn:hover {
+    opacity: 0.9;
+    color: var(--primary-pink);
+}
+.related-posts {
+    padding: 60px 0;
+    background: rgba(255, 255, 255, 0.02); /* Blago svetlija pozadina da odvoji sekciju */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.related-header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+.related-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.related-line {
+    width: 50px;
+    height: 2px;
+    background: var(--primary-pink);
+    margin: 15px auto 0;
+}
+.related-posts .magazine-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Na mobilnom jedan ispod drugog */
+    gap: 25px;
+}
+.category-header {
+    padding: 60px 0 30px;
+    text-align: center;
+    background: linear-gradient(to bottom, rgba(214, 51, 132, 0.1), transparent);
+}
+.breadcrumb {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.breadcrumb a {
+    color: #aaa;
+    text-decoration: none;
+}
+.breadcrumb span {
+    color: var(--primary-pink);
+}
+.category-header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 15px;
+}
+.category-header h1 span {
+    color: var(--primary-pink);
+}
+.category-desc {
+    max-width: 600px;
+    margin: 0 auto;
+    color: #ccc;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+.filter-list {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 20px 0;
+    list-style: none;
+    -webkit-overflow-scrolling: touch;
+}
+.filter-link {
+    display: inline-block;
+    padding: 4px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    white-space: nowrap; /* Sprečava prelamanje teksta u dugmetu */
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.filter-link.active, .filter-link:hover {
+    background: var(--primary-pink);
+    border-color: var(--primary-pink);
+}
+.chinese-zodiac-page {
+    padding: 40px 0;
+    color: white;
+}
+.zodiac-hero {
+    padding: 20px 0 40px;
+    text-align: center;
+}
+.zodiac-hero span {
+    color: var(--primary-pink);
+}
+.zodiac-hero h1 {
+    
+    font-size: 2.5rem;
+    
+    margin-bottom: 20px;
+}
+.zodiac-hero p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #ddd;
+    margin-bottom: 20px;
+    /* Na mobilnom neka tekst ima malo prostora sa strana */
+    padding: 0 15px; 
+}
+.lead-text {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: white !important;
+}
+.calculator-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+#birthYear {
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+    text-align: center;
+}
+.btn-calculate {
+    background: var(--primary-pink);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.zodiac-result-display {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.2);
+    display: none; 
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+}
+
+.zodiac-result-display.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+.result-animal-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    color: #ffd700; /* Zlatna boja za ime znaka */
+    margin-bottom: 10px;
+}
+#birthYear {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none;
+    box-shadow: none;
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    outline: none;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/*TABLETI*/
+@media (min-width: 48rem) {
+
+    :root {
+        --section-space: 3rem;
+    }
+    body {
+        padding-top: 8rem;
+        background-image: url(slike/zvezde-destkop.webp);
+    }
+    .container {
+        width: 100%;
+        max-width: 45rem;
+        margin-inline: auto;
+        padding-inline: 1rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    h2 {
+    
+        font-size: 1.55rem;
+    }
+    p {
+        font-size: 1.05rem;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+    }
+    .main-nav {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        
+    }
+    .nav-toggle {
+        display: none;
+    }
+    .nav-menu {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        width: auto;
+        background: none;
+        display: flex !important;
+        margin-top: 0.5rem;
+    }
+    .nav-menu ul {
+        flex-direction: row;
+        gap: 1rem;
+        justify-content: center;
+    }
+    .nav-menu li a {
+        padding: 0;
+        white-space: nowrap;
+        font-size: 0.75rem;
+        gap: 0.5rem;
+    }
+
+    .zodiac-grid { 
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 1.5rem; 
+    }
+
+    .newsletter-box {
+
+        text-align: left;
+        justify-content: space-between;
+    }
+    .newsletter-inline {
+        flex-direction: row;
+        width: auto;
+    }
+    .newsletter-text {
+        max-width: 50%;
+    }
+    .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .footer-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 2rem;
+    }
+    .footer-about {
+        text-align: left; 
+        align-items: flex-start;
+
+    }
+    .back-to-top {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 40px;
+        height: 40px;
+    }
+    .zodiac-grid-nav {
+        /* 6 kolona x 2 reda = 12 znakova */
+        grid-template-columns: repeat(4, 1fr); 
+    }
+    .horoscope-reading {
+        padding: 2.5rem; /* Više prostora za komotan izgled */
+        max-width: 650px; /* Ovde limitiramo širinu da ne bude presiroko */
+        margin-inline: auto; /* Centriramo na sredinu ekrana */
+        margin-bottom: 3rem;
+    }
+
+    .reading-header {
+        flex-direction: row; /* Vraćamo naslov i datum u istu ravan */
+        align-items: center;
+        gap: 15px;
+    }
+    .reading-date {
+       
+        font-style: italic;
+        font-size: 0.8rem;
+    }
+    .indicators-grid {
+        grid-template-columns: repeat(3, 1fr); /* Na desktopu tri u redu */
+    }
+    .astro-navigation-box {
+        margin: 30px auto; /* Centriranje i veći razmak na desktopu */
+        max-width: 800px;
+    }
+
+    .cta-links {
+        flex-direction: row; /* Horizontalno na desktopu */
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .separator {
+        display: inline; /* Vraćamo crticu između linkova */
+        color: rgba(255, 255, 255, 0.2);
+    }
+    .weekly-grid {
+        flex-direction: row; /* Desktop: tri kartice u redu */
+        justify-content: space-between;
+    }
+    
+    .weekly-card {
+        flex: 1; /* Sve tri kartice jednake širine */
+    }
+
+    .sign-header h2 {
+        font-size: 2.5rem;
+    }
+    .crystal-orb { width: 250px; height: 250px; }
+    .orb-wrapper { width: 300px; height: 350px; }
+    .orb-text { font-size: 1rem; }
+
+    .yearly-sign-block {
+        padding: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    
+    .yearly-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .blog-grid {
+        grid-template-columns: repeat(2, 1fr); /* Dve kolone na desktopu */
+    }
+    
+    .hero-post-image { flex: 1.5; height: 100%; }
+    .hero-post-info { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 50px; }
+    .hero-post-info h1 { font-size: 2.8rem; }
+    
+    .magazine-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .blog-filters .container {
+        display: flex;
+        justify-content: center;
+    }
+    .archive-header {
+        padding: 80px 0 40px;
+    }
+    .archive-header h1 {
+        font-size: 3rem;
+    }
+    .post-header h1 {
+        font-size: 2rem;
+        max-width: 900px;
+        margin: 20px auto;
+    }
+    
+    .post-main-image {
+        height: 550px;
+        border-radius: 20px;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    .related-posts .magazine-grid {
+        grid-template-columns: repeat(2, 1fr); /* Dva teksta jedan pored drugog na tabletu/desktopu */
+    }
+    
+    .related-title {
+        font-size: 1.8rem;
+    }
+    .share-btn {
+        padding: 12px 25px;
+        font-size: 0.9rem;
+    }
+    .category-header h1 {
+        font-size: 3rem;
+    }
+    
+    .filter-list {
+        justify-content: center;
+        overflow-x: visible;
+    }
+    .news-image {
+        height: 220px; /* Malo veća visina za tablete */
+    }
+    .input-group {
+        flex-direction: row;
+        justify-content: center;
+    }
+    .zodiac-result-display {
+        /* Ograničavamo širinu da tekst ne bi išao od ivice do ivice ekrana */
+        max-width: 500px; 
+    }
+
+    .zodiac-result-display p {
+        /* Smanjujemo font ako ti deluje preveliko na desktopu */
+        font-size: 0.95rem; 
+        line-height: 1.7;
+    }
+
+    .result-animal-name {
+        font-size: 1.5rem; /* Neznatno smanjujemo naslov znaka za bolji balans */
+    }
+    
+    
+}
+
+
+
+/*LAPTOP*/
+@media (min-width: 64rem) {
+
+    :root {
+        --section-space: 4rem;
+    }
+
+    .container {
+        max-width: 60rem;
+        padding-inline: 1.5rem;
+    }
+    h1 {
+        font-size: 2.2rem;
+    }
+    p {
+        font-size: 1.1rem;
+    }
+
+    .text-content {
+        max-width: 65ch;
+    }
+
+    .logo {
+        font-size: 1.8rem;
+    }
+    .nav-menu ul {
+        gap: 2rem;
+    }
+    .nav-menu li a {
+        font-size: 0.85rem; 
+    }
+    .footer-grid {
+        grid-template-columns: 2fr 1fr 1fr;
+        
+    }
+    
+    .zodiac-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.2rem;
+    }
+    .magazine-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        align-items: stretch; /* Ovo osigurava da su sve kartice u redu iste visine */
+    }
+    .news-image {
+        height: 250px; /* Idealna visina za desktop grid */
+    }
+    .zodiac-hero .container {
+        /* Ograničavamo širinu celog kontejnera za tekst na desktopu */
+        max-width: 800px; 
+        margin: 0 auto;
+    }
+    .zodiac-hero h1 {
+        font-size: 3.5rem; /* Naslov može ostati veći jer je to fokus */
+    }
+    .zodiac-hero p {
+        /* Smanjujemo veličinu fonta za suptilniji izgled */
+        font-size: 0.95rem; 
+        line-height: 1.8;
+        padding: 0; /* Vraćamo padding jer je kontejner sada uzak */
+    }
+    .lead-text {
+        /* Lead text neka bude samo za nijansu veći od ostalih */
+        font-size: 1.25rem; 
+        margin-bottom: 25px;
+    } 
+    .footer-about {
+        width: 80%;
+        
+    }
+}
+    
+
+
+
+/*DESKTOP*/
+@media (min-width: 80rem) {
+    .container {
+        max-width: 75rem;
+        padding-inline: 2rem;
+    }
+
+    .nav-menu li a {
+        font-size: 1rem;
+    }
+    .yearly-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+    .hero-post-info {
+        /* Osiguravamo da elementi unutar info dela ne pokušavaju da se rašire */
+        align-items: flex-start; 
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero-post-info h1 {
+        max-width: 90%; /* Da naslov ne udara u ivice na ultra širokim ekranima */
+    }
+    .related-posts .container {
+        max-width: 1000px;
+    }
+    
+}
+
+/* GDE DODAJEMO: Skroz na dno CSS fajla dodaj ovaj @keyframes */
+@keyframes fadeInZodiac {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
